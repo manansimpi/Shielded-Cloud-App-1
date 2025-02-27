@@ -183,3 +183,5 @@ https://github.com/user-attachments/assets/285c6226-8fa8-423e-9b8a-36a7b508d1af
 
 ![Screenshot 2025-02-26 182541](https://github.com/user-attachments/assets/4c1fb7f2-aa10-4a77-9676-a81d9548c5fe)
 
+* Note. Since at the moment we just have one App Server so next we will create an Image AMI from the current running instance. This image would be used to build the second App-Server which will be in our second AZ as well it will be used by the Auto-Scaling Groups that we are going to set soon.
+
