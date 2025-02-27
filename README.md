@@ -20,15 +20,18 @@
    -  VPC: WAF-VPC
    -  CIDR Block: 172.16.1.0/24
 3. Private Subnet:
-   -  Name: Private-Subnet
+   -  Name: Public_Subnet-2
    -  VPC: WAF-VPC
    -  CIDR Block: 172.16.2.0/24
+
+* Note - Both the subnets should be in different AZ's since it's a requirement of the Load Balancer which is going to be used soon.
      
 ![Screenshot 2025-02-24 002211](https://github.com/user-attachments/assets/85c4327c-edd4-4608-8766-70220b790b57)
 
 <br><br>
 
-![Screenshot 2025-02-24 002247](https://github.com/user-attachments/assets/a3f94eda-401e-437f-be78-d4430e80be09)
+![Screenshot 2025-02-25 071048](https://github.com/user-attachments/assets/8021648a-e139-41ad-92af-458c1d3c3ddf)
+
 
 
 
@@ -59,7 +62,7 @@
 2. Choose Amazon Linux 2 (or Ubuntu if preferred)
 3. Under Instance Type, pick t2.micro (free-tier)
 4. Network Settings:
-    - VPC: Select AWS-WAF
+    - VPC: Select WAF-VPC
     - Subnet: Select Public-Subnet
     - Enable Auto-Assign Public IP
 5. Security Group:
@@ -89,11 +92,94 @@
 
 ## 🔵 Phase 2: Deploy Application Load Balancer (ALB)
 
+### Step 5: Create an ALB
+
+1. Go to AWS Console → EC2 → Load Balancers → Create Load Balancer.
+2. Choose Application Load Balancer (ALB).
+3. Set ALB Configuration:
+    - Name: App-Server-Loadbalancer
+    - Scheme: Internet-facing
+    - VPC: Select WAF-VPC
+    - Subnets: Select two public subnets in different AZs
+
+![Screenshot 2025-02-25 060459](https://github.com/user-attachments/assets/ec15f4d6-80e1-40fd-af70-19d7082ef80d)
+
+<br><br>
+
+![Screenshot 2025-02-26 172327](https://github.com/user-attachments/assets/e7d79d7a-2065-4bf3-be69-0b94afa229fc)
 
 
 
+### Step 6: Configure the Security Group for ALB
+1️. Create or select a security group for ALB
+
+* Inbound Rules:
+    - HTTP (Port 80) → Source: Anywhere (0.0.0.0/0)
+    - (Optional) If you plan to use HTTPS later, allow HTTPS (Port 443)
+    - Outbound Rules:
+    - Allow all traffic (0.0.0.0/0)
+2️. Attach this security group to ALB
 
 
 
+![Screenshot 2025-02-25 060739](https://github.com/user-attachments/assets/243ec87f-6578-4ee2-a2f5-1b182b9b8f2a)
 
+<br><br>
+
+![Screenshot 2025-02-25 060931](https://github.com/user-attachments/assets/0d03c79b-2d2a-4a8a-ab12-4c422ac3493b)
+
+<br><br>
+
+![Screenshot 2025-02-25 061312](https://github.com/user-attachments/assets/8c717c90-ebab-4d94-ab7b-c055fb2f6013)
+
+
+
+### Step 7: Configure Listeners & Routing
+1. Listener Configuration
+
+    - Protocol: HTTP
+    - Port: 80
+    - Target Group: Create a new target group
+    - Name: MyProject-TG
+    - Target Type: Instance
+    - Protocol: HTTP
+    - Port: 80
+    - Health Check Path: /
+    - Health Check Protocol: HTTP
+
+2. Register EC2 Instances in Target Group
+
+    - Click "Register Targets"
+    - Select your EC2 instances
+    - Click "Include as pending below"
+    - Click "Register Targets"
+
+![Screenshot 2025-02-25 061312](https://github.com/user-attachments/assets/f371b714-84ed-4ede-bec2-775be246227c)
+
+<br><br>
+
+https://github.com/user-attachments/assets/1a27bee0-ad7d-4189-9445-3c74d4e0316b
+
+<br><br>
+
+![Screenshot 2025-02-25 065951](https://github.com/user-attachments/assets/0e138457-0d24-41aa-aef7-f75605804b91)
+
+
+
+### Step 8: Review, Create and Test ALB
+        
+1.  Review the settings
+    - Click "Create Load Balancer"
+    - Get the ALB DNS Name from the EC2 → Load Balancers page
+    - Visit http://<ALB_DNS_NAME> in a browser
+
+https://github.com/user-attachments/assets/285c6226-8fa8-423e-9b8a-36a7b508d1af
+
+<br><br>
+
+![Screenshot 2025-02-26 182439](https://github.com/user-attachments/assets/a2297058-6110-45b6-933d-4b4b06a5c27d)
+
+<br><br>
+
+![Screenshot 2025-02-26 182541](https://github.com/user-attachments/assets/4c1fb7f2-aa10-4a77-9676-a81d9548c5fe)
 
