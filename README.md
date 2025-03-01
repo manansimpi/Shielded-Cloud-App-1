@@ -185,3 +185,44 @@ https://github.com/user-attachments/assets/285c6226-8fa8-423e-9b8a-36a7b508d1af
 
 * Note. Since at the moment we just have one App Server so next we will create an Image AMI from the current running instance. This image would be used to build the second App-Server which will be in our second AZ as well it will be used by the Auto-Scaling Groups that we are going to set soon.
 
+
+### Additional Steps required in the Project.
+
+ Since we are also using Cloudfront for our project, we decided to include a website hosted on S3 with some pictures to monitor the proper functioning of Cloudfront.
+
+1. Hosting a Static Website on Amazon S3
+    - Step 1: Create an S3 General Purpose Bucket
+    - Enter a unique bucket name(mywafprojectbucket).
+    - Enable ACLs for the bucket.
+    - Uncheck the "Block all public access" option and confirm.
+    - Disable the Bucket Key.
+    - Click "Create bucket".
+  
+2. Upload Website Files
+    - Open your S3 bucket.
+    - Click "Upload" and select your website files (e.g., index.html, style.css, etc.).
+    - Click "Upload".
+  
+3. Configure Static Website Hosting
+    - Open your S3 bucket.
+    - Click on the "Properties" tab.
+    - Scroll down to "Static website hosting" and click "Edit".
+    - Select "Enable".
+    - For Index document, enter: index.html
+
+4. (Optional) For Error document, enter: error.html
+    - Save changes
+
+5. Set Public Read Permissions for all the website files present in the S3.
+   - Select all the files > Actions > Make Public using ACL.
+  
+6. Get Your Website URL
+    - Go to the Properties tab of your bucket.
+    - Under Static website hosting, copy the Endpoint URL.
+  
+
+https://github.com/user-attachments/assets/9a6de13e-eda0-40dc-8ef8-fc5e5e7c5e69
+
+
+
+
