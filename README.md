@@ -1,4 +1,4 @@
-# Shielded-Cloud-App
+# Shielded Cloud App - 1
 
 ## 🟢  Phase 1: Setting Up the Core Infrastructure
 
